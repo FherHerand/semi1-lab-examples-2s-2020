@@ -1,4 +1,4 @@
-var url = 'https://fjlz8fat91.execute-api.us-east-2.amazonaws.com/Test/upload';
+var url = 'https://lnzbuzf9sk.execute-api.us-east-2.amazonaws.com/Test/s3/upload';
 var data = {
     name: "fg",
     ext: "jpg",
@@ -17,12 +17,11 @@ fetch(url, {
 $.ajax({
   type: 'POST',
   url: url,
-  data: data,
+  data: JSON.stringify(data),
   success: function (data, status) {
       console.log('Success:', data)
   },
   error: function (xhr, ajaxOptions, thrownError) {
       console.log(`Error: ${xhr.status} ${xhr.responseText}`);
   }
-});
-*/
+});*/
