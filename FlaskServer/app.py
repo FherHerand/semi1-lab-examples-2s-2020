@@ -61,7 +61,7 @@ def ddb_save():
 
         try:
             response = dynamodb_client.put_item(
-                TableName='test',
+                TableName='tabla-semi1',
                 Item={
                     'id': {'S': id},
                     'name': {'S': name},
@@ -91,7 +91,7 @@ def ddb_update():
 
         try:
             response = dynamodb_client.update_item(
-                TableName='test',
+                TableName='tabla-semi1',
                 Key={'id': {'S': id}},
                 UpdateExpression='SET #courses = list_append(#courses, :new_course)',
                 ExpressionAttributeNames={
@@ -133,7 +133,7 @@ def ddb_query():
         try:
             response = dynamodb_client.scan(
                 TableName='test',
-                #ProjectionExpression='courses',
+                #ProjectionExpression='id',
                 FilterExpression='#name = :my_name',
                 ExpressionAttributeNames={
                     '#name': 'name',
@@ -181,7 +181,7 @@ def rek_compare():
                         'Name': target_image_path,
                     }
                 },
-                SimilarityThreshold=90,
+                SimilarityThreshold=10,
             )
             logging.info(response)
             return response

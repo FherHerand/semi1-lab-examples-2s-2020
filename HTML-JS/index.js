@@ -1,4 +1,4 @@
-var url = 'https://lnzbuzf9sk.execute-api.us-east-2.amazonaws.com/Test/s3/upload';
+var url = 'https://ft5mlwr7b1.execute-api.us-east-2.amazonaws.com/Test/s3/upload';
 var data = {
     name: "fg",
     ext: "jpg",
