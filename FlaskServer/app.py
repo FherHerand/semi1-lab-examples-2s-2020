@@ -148,6 +148,40 @@ def ddb_query():
             logging.error(e)
             return e.response
 
+@app.route('/rek/labels', methods = ['GET'])
+def rek_labels():
+    if request.method == 'GET':
+        content = request.args
+        source_image_name = content['image_name']
+
+        rekognition_client = boto3.client(
+            'rekognition',
+            aws_access_key_id=creds.rekognition['access_key_id'],
+            aws_secret_access_key=creds.rekognition['secret_access_key'],
+            region_name=creds.rekognition['region'],
+        )
+
+        BUCKET_NAME = 'bucket-test-201602822'
+        FOLDER_NAME = 'images'
+        image_path = '%s/%s' % (FOLDER_NAME, source_image_name)
+
+        try:
+            response = rekognition_client.detect_labels(
+                Image={
+                    'S3Object': {
+                        'Bucket': BUCKET_NAME,
+                        'Name': image_path,
+                    }
+                },
+                #MaxLabels=1,
+                #MinConfidence=50,
+            )
+            logging.info(response)
+            return response
+        except ClientError as e:
+            logging.error(e)
+            return e.response
+
 @app.route('/rek/compare', methods = ['POST'])
 def rek_compare():
     if request.method == 'POST':
@@ -182,40 +216,6 @@ def rek_compare():
                     }
                 },
                 SimilarityThreshold=10,
-            )
-            logging.info(response)
-            return response
-        except ClientError as e:
-            logging.error(e)
-            return e.response
-
-@app.route('/rek/labels', methods = ['GET'])
-def rek_labels():
-    if request.method == 'GET':
-        content = request.args
-        source_image_name = content['image_name']
-
-        rekognition_client = boto3.client(
-            'rekognition',
-            aws_access_key_id=creds.rekognition['access_key_id'],
-            aws_secret_access_key=creds.rekognition['secret_access_key'],
-            region_name=creds.rekognition['region'],
-        )
-
-        BUCKET_NAME = 'bucket-test-201602822'
-        FOLDER_NAME = 'images'
-        image_path = '%s/%s' % (FOLDER_NAME, source_image_name)
-
-        try:
-            response = rekognition_client.detect_labels(
-                Image={
-                    'S3Object': {
-                        'Bucket': BUCKET_NAME,
-                        'Name': image_path,
-                    }
-                },
-                #MaxLabels=1,
-                #MinConfidence=50,
             )
             logging.info(response)
             return response
