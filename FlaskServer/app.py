@@ -132,8 +132,8 @@ def ddb_query():
 
         try:
             response = dynamodb_client.scan(
-                TableName='test',
-                #ProjectionExpression='id',
+                TableName='tabla-semi1',
+                ProjectionExpression='courses',
                 FilterExpression='#name = :my_name',
                 ExpressionAttributeNames={
                     '#name': 'name',
