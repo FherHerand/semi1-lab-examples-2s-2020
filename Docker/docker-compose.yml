@@ -1,0 +1,69 @@
+version: "3"
+services:
+  website:
+    container_name: website-fh
+    image: fherherand/website:latest
+    #volumes:
+    #  - ./website/:/var/www/html/
+    ports:
+      - 80:80
+    networks:
+      testing_net:
+            ipv4_address: 182.18.7.11
+  api-flask:
+    container_name: api-flask-fh
+    image: fherherand/api-flask:latest
+    restart: on-failure
+    ports:
+      - 5000:5001
+    networks:
+      testing_net:
+            ipv4_address: 182.18.7.9
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    environment:
+      - PORT=5001
+      - IP=182.18.7.9
+      - DB_USER=myuser
+      - DB_PASSWORD=myuser
+      - DB_HOST=182.18.7.2
+      - DB_NAME=db
+    depends_on:
+      - mysql
+  mysql:
+    container_name: mysql-db-fh
+    restart: always
+    image: fherherand/mysql-db:latest
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+    networks:
+        testing_net:
+            ipv4_address: 182.18.7.2
+  adminer:
+    container_name: adminer-fh
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+        testing_net:
+            ipv4_address: 182.18.7.3
+    depends_on:
+      - mysql
+
+networks:
+    testing_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 182.18.7.0/24

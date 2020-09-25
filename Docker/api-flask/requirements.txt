@@ -1,0 +1,4 @@
+Flask==1.1.2
+mysql-connector-python==8.0.21
+python-dotenv==0.14.0
+simplejson==3.17.2
