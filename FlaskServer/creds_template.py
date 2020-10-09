@@ -12,3 +12,8 @@ dynamodb = {
     'secret_access_key': '',
     'region': 'us-east-2',
 }
+cognito = {
+    'access_key_id': '',
+    'secret_access_key': '',
+    'region': 'us-east-1',
+}

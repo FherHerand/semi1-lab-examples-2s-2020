@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import boto3
+import botocore
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key, Attr
 from flask import Flask, request
@@ -222,6 +223,49 @@ def rek_compare():
         except ClientError as e:
             logging.error(e)
             return e.response
+        
+@app.route('/cognito/create', methods = ['POST'])
+def cognito_login():
+    content = request.get_json()
+    
+    client = boto3.client(
+        'cognito-idp',
+        aws_access_key_id=creds.cognito['access_key_id'],
+        aws_secret_access_key=creds.cognito['secret_access_key'],
+        region_name=creds.cognito['region'],
+    )
+    
+    try:
+        response = client.admin_create_user(
+            UserPoolId='us-east-1_e6AhcandP',
+            Username=content['username'],
+            UserAttributes=[
+                {
+                    'Name': 'name',
+                    'Value': content['name']
+                },
+                {
+                    'Name': 'email',
+                    'Value': content['email']
+                },
+                {
+                    'Name': 'custom:password',
+                    'Value': content['email']
+                },
+            ],
+            TemporaryPassword='123456Qw,',
+            ForceAliasCreation=False,
+            MessageAction='SUPPRESS',
+            DesiredDeliveryMediums=[
+                'EMAIL',
+            ],
+            ClientMetadata={
+                'string': 'string'
+            }
+        )
+        return response
+    except ClientError as e:
+        return e.response
 
 if __name__ == '__main__':
     app.run(host= '0.0.0.0', debug=True)

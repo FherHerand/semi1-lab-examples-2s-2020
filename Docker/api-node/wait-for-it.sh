@@ -1,5 +1,5 @@
 #!/bin/bash
-x=85
+x=10
 while [ $x -gt 0 ]
 do
   sleep ls
@@ -7,4 +7,3 @@ do
   echo "$x seconds left"
   x=$(( $x - 1 ))
 done
-node /App/index.js
