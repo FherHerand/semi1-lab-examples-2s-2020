@@ -250,7 +250,7 @@ def cognito_login():
                 },
                 {
                     'Name': 'custom:password',
-                    'Value': content['email']
+                    'Value': content['password']
                 },
             ],
             TemporaryPassword='123456Qw,',
