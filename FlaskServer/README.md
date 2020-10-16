@@ -21,3 +21,5 @@ Se define el servidor que contiene las siguientes funcionalidades:
 | /ddb/person/query | GET | Obtiene registros filtrados de una tabla en DynamoDB |
 | /rek/labels | GET | Obtiene las etiquetas de una imagen utilizando Rekognition |
 | /rek/compare | POST | Compara si un rostro de una imagen se encuentra entre los rostros de otra imagen utilizando Rekognition |
+| /cognito/create | POST | Crear un nuevo usuario en un user pool de Cognito |
+| /lex | POST | Envía un texto a un bot ya creado con Amazon Lex |
