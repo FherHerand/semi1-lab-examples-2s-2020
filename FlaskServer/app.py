@@ -267,5 +267,26 @@ def cognito_login():
     except ClientError as e:
         return e.response
 
+@app.route('/lex', methods = ['POST'])
+def lext():
+    content = request.get_json()
+    
+    client = boto3.client('lex-runtime',
+        aws_access_key_id=creds.lex['access_key_id'],
+        aws_secret_access_key=creds.lex['secret_access_key'],
+        region_name=creds.lex['region'],
+    )
+    
+    try:
+        response = client.post_text(
+            botName='semibot',
+            botAlias='semibot',
+            userId=content['user_id'],
+            inputText=content['text']
+        )
+        return response
+    except ClientError as e:
+        return e.response
+
 if __name__ == '__main__':
     app.run(host= '0.0.0.0', debug=True)
